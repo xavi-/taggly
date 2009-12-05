@@ -1,0 +1,28 @@
+<html>
+<head>
+</head>
+<body>
+<a href="http://www.google.com">a link</a>
+<a href="demo.html">a relative link</a>
+<img src="performance.png"/>
+<img src="http://www.google.com/intl/en_ALL/images/logo.gif"/>
+<div id="log"></div>
+<script>
+(function() {
+    var window = this,
+        cns = window.console || { log: function(s) { document.getElementById("log").innerHTML += s + "<br/>"; } };
+
+    document.onmousemove = function(e) {
+        e = e || window.event;
+        var targ = e.target || e.srcElement;
+        if(targ.nodeType === 3) { targ = targ.parentNode; }
+        
+        if(targ.src || targ.href) {
+            var url = targ.src || targ.href;
+            cns.log("url: " + url);
+        }
+    };
+})();
+</script>
+</body>
+</html>

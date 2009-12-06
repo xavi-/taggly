@@ -1,28 +1,71 @@
 <html>
 <head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script>
 </head>
 <body>
-<a href="http://www.google.com">a link</a>
-<a href="demo.html">a relative link</a>
-<img src="performance.png"/>
+<a href="http://www.google.com">a link</a><br/>
+<a href="demo.html">a relative link</a><br/>
+<img src="performance.png"/><br/>
 <img src="http://www.google.com/intl/en_ALL/images/logo.gif"/>
-<div id="log"></div>
-<script>
-(function() {
-    var window = this,
-        cns = window.console || { log: function(s) { document.getElementById("log").innerHTML += s + "<br/>"; } };
+<div id="log" style="height: 200px; overflow: auto;"></div>
+<script type="text/javascript">
+$(function() {
+    var window = this;
 
-    document.onmousemove = function(e) {
-        e = e || window.event;
-        var targ = e.target || e.srcElement;
-        if(targ.nodeType === 3) { targ = targ.parentNode; }
+    document.onmousemove = (function() {
+        var lastTarg, hideTimeout,
+            info = document.createElement("div");
+        info.style.position = "absolute";
+        info.style.display = "none";
+        info.style.zIndex = "9999";
+        info.className = "info";
         
-        if(targ.src || targ.href) {
-            var url = targ.src || targ.href;
-            cns.log("url: " + url);
+        document.body.appendChild(info);
+        
+        function isInfo(elem) {
+            if(!elem) { return false; }
+        
+            do {
+                if(elem === info) { return true; }
+                elem = elem.parentNode
+            } while(elem && elem !== document.body);
+            
+            return false;
         }
-    };
-})();
+        
+        return function onmousemove(e) {
+            e = e || window.event;
+            var targ = e.target || e.srcElement;
+            if(targ.nodeType === 3) { targ = targ.parentNode; }
+            
+            if(isInfo(targ)) {
+                if(hideTimeout) { clearTimeout(hideTimeout); }
+                info.style.display = "block";
+                return; 
+            }
+            
+            if(lastTarg === targ) { return; }
+            
+            lastTarg = targ;
+            
+            if(targ.src || targ.href) {
+                var $targ = $(targ);
+                var pos = $targ.position(), height = $targ.height();
+                var url = targ.src || targ.href;
+                
+                if(hideTimeout) { clearTimeout(hideTimeout); }
+                
+                info.style.left = pos.left + "px";
+                info.style.top = pos.top + height + "px";
+                
+                info.innerHTML = "<b>here is some info about </b><br/>" + url;
+                info.style.display = "block";
+            } else if(info.style.display === "block") {
+                hideTimeout = setTimeout(function() { info.style.display = "none"; }, 500);
+            }
+        }
+    })();
+});
 </script>
 </body>
 </html>

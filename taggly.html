@@ -40,7 +40,7 @@
             if(targ.nodeType === 3) { targ = targ.parentNode; }
             
             if(isInfo(targ)) {
-                if(hideTimeout) { clearTimeout(hideTimeout); hideTimeout = null; }
+                if(hideTimeout) { hideTimeout = clearTimeout(hideTimeout); }
                 info.style.display = "block";
                 return; 
             }
@@ -54,7 +54,7 @@
                 var pos = $targ.position(), height = $targ.height();
                 var url = targ.src || targ.href;
                 
-                if(hideTimeout) { clearTimeout(hideTimeout); hideTimeout = null; }
+                if(hideTimeout) { hideTimeout = clearTimeout(hideTimeout); }
                 
                 info.style.left = pos.left + "px";
                 info.style.top = pos.top + height + "px";

@@ -45,7 +45,6 @@
             info.style.top = pos.top + height + "px";
             
             info.innerHTML = "<b>here is some info about </b><br/>" + url;
-            info.style.display = "block";
         }
         
         return function onmousemove(e) {
@@ -65,9 +64,11 @@
             lastTarg = targ;
             
             if(targ.src || targ.href) {
-                showTimeout = (function(targ) { return setTimeout(function() { showInfo(targ); }, 1000); })(targ);
+                showTimeout = (function(targ) { 
+                    return setTimeout(function() { showInfo(targ); showTimeout = null; }, 1000); 
+                })(targ);
             } else if(info.style.display === "block") {
-                hideTimeout = setTimeout(function() { info.style.display = "none"; }, 500);
+                hideTimeout = setTimeout(function() { info.style.display = "none"; hideTimeout = null; }, 500);
             }
         }
     })();

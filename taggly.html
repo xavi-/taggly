@@ -34,6 +34,20 @@
             return false;
         }
         
+        function showInfo(targ) {        
+            var $targ = $(targ); // TODO: removed jquery dependency
+            var pos = $targ.position(), height = $targ.height();
+            var url = targ.src || targ.href;
+            
+            if(hideTimeout) { clearTimeout(hideTimeout); hideTimeout = null; }
+            
+            info.style.left = pos.left + "px";
+            info.style.top = pos.top + height + "px";
+            
+            info.innerHTML = "<b>here is some info about </b><br/>" + url;
+            info.style.display = "block";
+        }
+        
         return function onmousemove(e) {
             e = e || window.event;
             var targ = e.target || e.srcElement;
@@ -47,20 +61,11 @@
             
             if(lastTarg === targ) { return; }
             
+            showTimeout = clearTimeout(showTimeout);
             lastTarg = targ;
             
             if(targ.src || targ.href) {
-                var $targ = $(targ);
-                var pos = $targ.position(), height = $targ.height();
-                var url = targ.src || targ.href;
-                
-                if(hideTimeout) { hideTimeout = clearTimeout(hideTimeout); }
-                
-                info.style.left = pos.left + "px";
-                info.style.top = pos.top + height + "px";
-                
-                info.innerHTML = "<b>here is some info about </b><br/>" + url;
-                info.style.display = "block";
+                showTimeout = (function(targ) { return setTimeout(function() { showInfo(targ); }, 1000); })(targ);
             } else if(info.style.display === "block") {
                 hideTimeout = setTimeout(function() { info.style.display = "none"; }, 500);
             }

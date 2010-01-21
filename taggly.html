@@ -13,7 +13,7 @@
     var window = this, undefined;
 
     document.onmousemove = (function() {
-        var lastTarg, hideTimeout,
+        var lastTarg, hideTimeout, showTimeout,
             info = document.createElement("div");
         info.style.position = "absolute";
         info.style.display = "none";
@@ -54,7 +54,7 @@
                 var pos = $targ.position(), height = $targ.height();
                 var url = targ.src || targ.href;
                 
-                if(hideTimeout) { clearTimeout(hideTimeout); }
+                if(hideTimeout) { clearTimeout(hideTimeout); hideTimeout = null; }
                 
                 info.style.left = pos.left + "px";
                 info.style.top = pos.top + height + "px";

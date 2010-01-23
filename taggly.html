@@ -45,6 +45,7 @@
             info.style.top = pos.top + height + "px";
             
             info.innerHTML = "<b>here is some info about </b><br/>" + url;
+            info.style.display = "block";
         }
         
         return function onmousemove(e) {
@@ -55,7 +56,7 @@
             if(isInfo(targ)) {
                 if(hideTimeout) { hideTimeout = clearTimeout(hideTimeout); }
                 info.style.display = "block";
-                return; 
+                return;
             }
             
             if(lastTarg === targ) { return; }

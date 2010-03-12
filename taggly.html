@@ -35,10 +35,10 @@
         }
         
         function getPos(elem) {
-            var pos = { x: 0, y: 0 };
+            var pos = { left: 0, top: 0 };
             while(elem) {
-                pos.x += elem.offsetLeft;
-                pos.y += elem.offsetTop;
+                pos.left += elem.offsetLeft;
+                pos.top += elem.offsetTop;
                 elem = elem.offsetParent;
             }
             
@@ -51,8 +51,8 @@
             
             if(hideTimeout) { clearTimeout(hideTimeout); hideTimeout = null; }
             
-            info.style.left = pos.x + "px";
-            info.style.top = pos.y + height + "px";
+            info.style.left = pos.left + "px";
+            info.style.top = pos.top + height + "px";
             
             info.innerHTML = "<b>here is some info about </b><br/>" + url;
             info.style.display = "block";

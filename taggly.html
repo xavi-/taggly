@@ -34,15 +34,25 @@
             return false;
         }
         
-        function showInfo(targ) {        
-            var $targ = $(targ); // TODO: removed jquery dependency
-            var pos = $targ.position(), height = $targ.height();
+        function getPos(elem) {
+            var pos = { x: 0, y: 0 };
+            while(elem) {
+                pos.x += elem.offsetLeft;
+                pos.y += elem.offsetTop;
+                elem = elem.offsetParent;
+            }
+            
+            return pos;
+        }
+        
+        function showInfo(targ) {
+            var pos = getPos(targ), height = targ.offsetHeight;
             var url = targ.src || targ.href;
             
             if(hideTimeout) { clearTimeout(hideTimeout); hideTimeout = null; }
             
-            info.style.left = pos.left + "px";
-            info.style.top = pos.top + height + "px";
+            info.style.left = pos.x + "px";
+            info.style.top = pos.y + height + "px";
             
             info.innerHTML = "<b>here is some info about </b><br/>" + url;
             info.style.display = "block";

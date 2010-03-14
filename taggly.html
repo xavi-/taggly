@@ -7,12 +7,13 @@
 <a href="demo.html">a relative link</a><br/>
 <img src="performance.png"/><br/>
 <img src="http://www.google.com/intl/en_ALL/images/logo.gif"/>
+<div id="the-tags"></div>
 <div id="log" style="height: 200px; overflow: auto;"></div>
 <script type="text/javascript">
 (function() {
     var window = this, undefined;
 
-    document.onmousemove = (function() {
+    var showTags = (function() {
         var lastTarg, hideTimeout, showTimeout,
             info = document.createElement("div");
         info.style.position = "absolute";
@@ -58,7 +59,7 @@
             info.style.display = "block";
         }
         
-        return function onmousemove(e) {
+        return function showTags(e) {
             e = e || window.event;
             var targ = e.target || e.srcElement;
             if(targ.nodeType === 3) { targ = targ.parentNode; }
@@ -83,6 +84,29 @@
             }
         }
     })();
+    
+    var renderTags = (function() {
+        function getInfo() {
+            window.location.href;
+            
+            return [ { tag: "hello", count: 3 }, { tag: "hi", count: 2 } ];
+        }
+ 
+        function renderTags() {
+            var info = getInfo(), list = [ "<ol class='tags'>" ];
+            for(var i = 0; i < info.length; i++) {
+                list.push("<li class='tag'>", info[i].tag, "</li>");
+            }
+            list.push("</ol>");
+            
+            document.getElementById("the-tags").innerHTML = list.join("");
+        }
+        
+        return renderTags;
+    })();
+    
+    document.onmousemove = showTags;
+    renderTags();
 })();
 </script>
 </body>
